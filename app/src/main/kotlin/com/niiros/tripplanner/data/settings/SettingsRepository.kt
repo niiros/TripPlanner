@@ -32,6 +32,17 @@ class SettingsRepository(private val context: Context) {
         val buffer = intPreferencesKey("sunset_buffer_minutes")
         val tzeit = stringPreferencesKey("tzeit_method")
         val notifications = booleanPreferencesKey("notifications_enabled")
+        val sampleSeeded = booleanPreferencesKey("sample_seeded")
+    }
+
+    /** True once the demo sample day was inserted automatically, so it is not re-added after deletion. */
+    suspend fun markSampleSeeded(): Boolean {
+        var already = false
+        context.dataStore.edit {
+            already = it[Keys.sampleSeeded] == true
+            it[Keys.sampleSeeded] = true
+        }
+        return already
     }
 
     val settings: Flow<AppSettings> = context.dataStore.data.map { it.toSettings() }

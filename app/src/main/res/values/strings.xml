@@ -1,4 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">מתכנן יום טיול</string>
+
+    <!-- Generic -->
+    <string name="action_back">חזרה</string>
+    <string name="action_close">סגירה</string>
+    <string name="action_save">שמירה</string>
+    <string name="action_cancel">ביטול</string>
+    <string name="action_ok">אישור</string>
+    <string name="action_delete">מחיקה</string>
+    <string name="action_edit">עריכה</string>
+    <string name="action_more">אפשרויות נוספות</string>
+    <string name="action_retry">ניסיון חוזר</string>
+    <string name="loading">מחשב…</string>
+
+    <!-- Trip list -->
+    <string name="trips_title">הטיולים שלי</string>
+    <string name="trips_empty">עדיין אין טיולים שמורים. אפשר ליצור טיול חדש או לטעון יום לדוגמה.</string>
+    <string name="trips_new">טיול חדש</string>
+    <string name="trips_load_sample">טעינת יום לדוגמה (מרוקו)</string>
+    <string name="trips_import">ייבוא טיול מקובץ</string>
+    <string name="trips_settings">הגדרות</string>
+    <string name="trips_open">פתיחה</string>
+    <string name="trips_duplicate">שכפול</string>
+    <string name="trips_duplicate_suffix">" (עותק)"</string>
+    <string name="trips_delete_confirm_title">למחוק את הטיול?</string>
+    <string name="trips_delete_confirm_text">הטיול \"%1$s\" יימחק לצמיתות.</string>
+    <string name="trips_item_subtitle">%1$s · יציאה מ%2$s</string>
+    <string name="trips_item_no_start">%1$s · ללא נקודת יציאה</string>
+    <string name="trips_default_name">טיול %1$s</string>
+    <string name="import_failed">הקובץ אינו קובץ טיול תקין.</string>
+    <string name="import_done">הטיול יובא.</string>
+
+    <!-- Demo mode / key -->
+    <string name="demo_banner_title">מצב הדגמה</string>
+    <string name="demo_banner_text">לא הוגדר מפתח Google Maps, לכן חיפוש מקומות, מסלולים ומזג אוויר הם נתוני דמו סינתטיים (יום לדוגמה במרוקו). כדי לעבוד עם נתונים אמיתיים יש להוסיף MAPS_API_KEY לקובץ local.properties ולבנות מחדש, לפי הסעיף \"API key setup\" בקובץ README.</string>
+    <string name="demo_map_placeholder">תצוגת מפה אינה זמינה במצב הדגמה</string>
+
+    <!-- Errors -->
+    <string name="error_location_denied">אין הרשאת מיקום. אפשר לחפש נקודת יציאה ידנית.</string>
+    <string name="error_location_unavailable">לא ניתן לקבל מיקום נוכחי. אפשר לחפש נקודת יציאה ידנית.</string>
+    <string name="error_no_route">לא נמצא מסלול נסיעה בחלק מהקטעים. הזמנים בקטעים אלה הם הערכה גסה.</string>
+    <string name="error_key_missing">לא הוגדר מפתח Google Maps. האפליקציה פועלת במצב הדגמה.</string>
+    <string name="error_key_invalid">מפתח ה-API נדחה: הוא לא תקין, מוגבל לחבילה או לחתימה אחרת, או שה-API לא הופעל עבורו. יש לבדוק את ההגבלות ב-Google Cloud Console.</string>
+    <string name="error_quota">חריגה ממכסת השימוש של Google Maps. אפשר לנסות שוב מאוחר יותר או להגדיל את המכסה היומית.</string>
+    <string name="error_weather_unavailable">תחזית מזג האוויר אינה זמינה כרגע. שאר החישובים ממשיכים לעבוד.</string>
+    <string name="error_offline">אין חיבור לאינטרנט. חלק מהנתונים אינם מעודכנים.</string>
+    <string name="error_server">שגיאה זמנית בשירות חיצוני. אפשר לנסות שוב.</string>
+    <string name="error_zone_uncertain">אזור הזמן של נקודת היציאה לא אותר. הזמנים מוצגים לפי שעון המכשיר עד שיתקבל מידע.</string>
+    <string name="error_search_failed">החיפוש נכשל.</string>
+
+    <!-- Trip screen header -->
+    <string name="trip_date">תאריך</string>
+    <string name="trip_departure">שעת יציאה</string>
+    <string name="trip_zone">אזור זמן: %1$s</string>
+    <string name="trip_zone_multi">שימו לב: חלק מהעצירות באזור זמן אחר. כל עצירה מוצגת בשעון המקומי שלה.</string>
+    <string name="trip_left_now">יצאתי עכשיו</string>
+    <string name="trip_left_now_done">הלו\"ז עודכן לפי היציאה עכשיו מ%1$s.</string>
+    <string name="trip_share">שיתוף סיכום היום</string>
+    <string name="trip_export">ייצוא לקובץ JSON</string>
+    <string name="trip_rename">שינוי שם</string>
+    <string name="trip_name_label">שם הטיול</string>
+    <string name="trip_no_start">אין נקודת יציאה</string>
+    <string name="trip_set_start_current">יציאה מהמיקום הנוכחי</string>
+    <string name="trip_set_start_search">חיפוש נקודת יציאה</string>
+    <string name="trip_my_location">המיקום שלי</string>
+    <string name="trip_add_stop">הוספת יעד</string>
+    <string name="trip_start_label">יציאה</string>
+    <string name="trip_change_start">שינוי נקודת יציאה</string>
+
+    <!-- Zmanim card -->
+    <string name="zmanim_title">זמני היום</string>
+    <string name="zmanim_for_place">לפי %1$s</string>
+    <string name="zman_chatzot">חצות היום</string>
+    <string name="zman_mincha_gedola">מנחה גדולה</string>
+    <string name="zman_mincha_ketana">מנחה קטנה</string>
+    <string name="zman_plag">פלג המנחה</string>
+    <string name="zman_sunset">שקיעה</string>
+    <string name="zman_tzeit">צאת הכוכבים</string>
+    <string name="zmanim_unavailable">לא ניתן לחשב זמנים למיקום זה בתאריך זה.</string>
+
+    <!-- Clothing card -->
+    <string name="clothing_title">לבוש להיום</string>
+    <string name="clothing_range">%1$d° עד %2$d° · הפרש %3$d°</string>
+    <string name="clothing_sentence">הכי קר ב%1$s בסביבות %2$s (מרגיש %3$d°), הכי חם ב%4$s בסביבות %5$s (מרגיש %6$d°).</string>
+    <string name="clothing_highest">הנקודה הגבוהה ביום: %1$s, %2$s.</string>
+    <string name="clothing_item_with_place">%1$s (%2$s)</string>
+    <string name="clothing_layers">שכבות</string>
+    <string name="clothing_warm_layer">פליז או שכבה חמה</string>
+    <string name="clothing_coat">מעיל, כובע וכפפות</string>
+    <string name="clothing_light">בגדים קלים ומים נוספים</string>
+    <string name="clothing_windbreaker">מעיל רוח</string>
+    <string name="clothing_rain_jacket">מעיל גשם</string>
+    <string name="clothing_hat_sunscreen">כובע וקרם הגנה</string>
+    <string name="clothing_waterproof_shoes">נעליים עמידות למים</string>
+    <string name="clothing_no_data">אין עדיין תחזית לחישוב המלצת לבוש.</string>
+
+    <!-- Daylight bar -->
+    <string name="daylight_bar_title">אור יום לאורך היום</string>
+    <string name="daylight_bar_description">סרגל זמן מ-%1$s עד %2$s. שקיעה ב-%3$s. %4$d עצירות, מתוכן %5$d אחרי השקיעה.</string>
+    <string name="daylight_bar_sunset">שקיעה %1$s</string>
+    <string name="daylight_bar_legend_stop">עצירה</string>
+    <string name="daylight_bar_legend_late">עצירה מאוחרת</string>
+    <string name="daylight_bar_legend_night">לילה</string>
+
+    <!-- Stops -->
+    <string name="elevation_line">רום %1$s מ\'</string>
+    <string name="stop_arrival_departure">הגעה %1$s · יציאה %2$s</string>
+    <string name="stop_dwell">שהייה %1$s</string>
+    <string name="stop_zone_changed">אזור זמן אחר: %1$s</string>
+    <string name="stop_drag">גרירה לשינוי הסדר</string>
+    <string name="stop_move_up">הזזה למעלה</string>
+    <string name="stop_move_down">הזזה למטה</string>
+    <string name="stop_delete_confirm">למחוק את %1$s?</string>
+    <string name="stop_departed_now">יציאה בפועל</string>
+
+    <string name="label_midday">סמוך לחצות היום · %1$s</string>
+    <string name="label_before_sunset">%1$s שע\' לפני השקיעה</string>
+    <string name="label_after_sunset">%1$d דק\' אחרי השקיעה</string>
+    <string name="status_ok">מגיעים באור יום</string>
+    <string name="status_near_sunset">קרוב לשקיעה</string>
+    <string name="status_stay_past_sunset">השהייה נמשכת אחרי השקיעה</string>
+    <string name="status_late">מגיעים אחרי השקיעה</string>
+    <string name="fix_leave_at">לצאת ב-%1$s</string>
+    <string name="fix_shorten">לקצר שהייה ב-%1$d דק\'</string>
+    <string name="fix_shorten_detail">ב%1$s</string>
+
+    <string name="prayer_mincha_here">מנחה כאן</string>
+    <string name="prayer_mincha_suggested">מוצע: מנחה כאן</string>
+    <string name="prayer_arvit_here">ערבית כאן</string>
+    <string name="prayer_arvit_suggested">מוצע: ערבית כאן</string>
+    <string name="prayer_mincha_missing">אין עצירה למנחה. יש לעצור עד %1$s</string>
+    <string name="prayer_arvit_tzeit_note">צאת הכוכבים %1$s, אחרי ההגעה האחרונה</string>
+    <string name="prayer_problem_before_gedola">המנחה כאן לפני מנחה גדולה (%1$s)</string>
+    <string name="prayer_problem_after_sunset">המנחה כאן אחרי השקיעה (%1$s)</string>
+
+    <!-- Legs -->
+    <string name="leg_summary">נסיעה %1$s · %2$s ק\"מ</string>
+    <string name="leg_no_traffic">ללא נתוני תנועה</string>
+    <string name="leg_estimate_no_route">הערכה גסה: לא נמצא מסלול</string>
+    <string name="leg_estimate_error">הערכה גסה: שירות המסלולים לא זמין</string>
+
+    <!-- Durations -->
+    <string name="duration_h_mm">%1$d:%2$02d שע\'</string>
+    <string name="duration_min">%1$d דק\'</string>
+
+    <!-- Weather -->
+    <string name="weather_not_yet">אין תחזית עדיין</string>
+    <string name="weather_failed">התחזית לא זמינה</string>
+    <string name="weather_feels_like">מרגיש %1$d°</string>
+    <string name="weather_temp">%1$d°</string>
+    <string name="weather_wind">רוח %1$d קמ\"ש</string>
+    <string name="weather_rain">גשם %1$d%%</string>
+    <string name="weather_high_uv">קרינה גבוהה</string>
+    <string name="wx_clear">בהיר</string>
+    <string name="wx_mainly_clear">בהיר ברובו</string>
+    <string name="wx_partly_cloudy">מעונן חלקית</string>
+    <string name="wx_overcast">מעונן</string>
+    <string name="wx_fog">ערפל</string>
+    <string name="wx_drizzle">טפטוף</string>
+    <string name="wx_rain">גשם</string>
+    <string name="wx_freezing_rain">גשם קופא</string>
+    <string name="wx_snow">שלג</string>
+    <string name="wx_showers">ממטרים</string>
+    <string name="wx_snow_showers">ממטרי שלג</string>
+    <string name="wx_thunderstorm">סופת רעמים</string>
+    <string name="wx_unknown">לא ידוע</string>
+    <string name="wx_night_suffix">%1$s (לילה)</string>
+    <string name="icon_clear_day">שמש</string>
+    <string name="icon_clear_night">ירח</string>
+    <string name="icon_partly_cloudy">שמש ועננים</string>
+    <string name="icon_cloudy">עננים</string>
+    <string name="icon_rain">גשם</string>
+    <string name="icon_storm">סערה</string>
+    <string name="icon_snow">שלג</string>
+    <string name="icon_fog">ערפל</string>
+    <string name="icon_wind">רוח</string>
+
+    <!-- Footer -->
+    <string name="footer_drive">סה\"כ נסיעה</string>
+    <string name="footer_dwell">סה\"כ שהייה</string>
+    <string name="footer_end">סיום היום</string>
+
+    <!-- Navigation intents -->
+    <string name="nav_title">ניווט</string>
+    <string name="nav_google_maps">Google Maps</string>
+    <string name="nav_waze">Waze</string>
+    <string name="nav_to">ניווט אל %1$s</string>
+    <string name="nav_no_app">לא נמצאה אפליקציית ניווט. נפתח בדפדפן.</string>
+
+    <!-- Add stop sheet -->
+    <string name="add_title">הוספת יעד</string>
+    <string name="edit_title">עריכת יעד</string>
+    <string name="start_title">נקודת יציאה</string>
+    <string name="add_search_hint">חיפוש מקום</string>
+    <string name="add_searching">מחפש…</string>
+    <string name="add_no_results">לא נמצאו תוצאות</string>
+    <string name="add_change_place">בחירת מקום אחר</string>
+    <string name="add_dwell">זמן שהייה</string>
+    <string name="add_dwell_custom">אחר</string>
+    <string name="add_dwell_custom_title">זמן שהייה בדקות</string>
+    <string name="add_needs_daylight">דורש אור יום</string>
+    <string name="add_mincha_here">מנחה כאן</string>
+    <string name="add_arvit_here">ערבית כאן</string>
+    <string name="add_preview_title">תצוגה מקדימה</string>
+    <string name="add_preview_drive">נסיעה מהנקודה הקודמת: %1$s</string>
+    <string name="add_preview_arrival">הגעה משוערת: %1$s</string>
+    <string name="add_preview_sunset">שקיעה ביעד: %1$s</string>
+    <string name="add_confirm">הוספה ליום</string>
+    <string name="add_confirm_edit">שמירת שינויים</string>
+    <string name="add_confirm_start">קביעה כנקודת יציאה</string>
+    <string name="add_map_description">מפה עם סימון של %1$s</string>
+
+    <!-- Settings -->
+    <string name="settings_title">הגדרות</string>
+    <string name="settings_buffer">מרווח ביטחון לפני השקיעה</string>
+    <string name="settings_buffer_value">%1$d דק\'</string>
+    <string name="settings_tzeit">שיטת צאת הכוכבים</string>
+    <string name="tzeit_8_5">8.5 מעלות מתחת לאופק</string>
+    <string name="tzeit_18">18 דקות אחרי השקיעה</string>
+    <string name="tzeit_72">72 דקות (רבנו תם)</string>
+    <string name="settings_method_note">שעות זמניות לפי הגר\"א (זריחה עד שקיעה בגובה פני הים).</string>
+    <string name="settings_key_status">מפתח Google Maps</string>
+    <string name="settings_key_present">מוגדר</string>
+    <string name="settings_key_absent">לא מוגדר (מצב הדגמה)</string>
+    <string name="settings_data_sources">מקורות נתונים: Google Maps Platform (מקומות, מסלולים, מפה), Open-Meteo.com (מזג אוויר, רום ואזור זמן, ברישיון CC BY 4.0), KosherJava Zmanim (זמני היום). נשלחות רק קואורדינטות ושעות.</string>
+    <string name="settings_notifications">התראות ביום הטיול</string>
+    <string name="settings_notifications_detail">תזכורת לצאת בזמן כדי להגיע לפני השקיעה, ותזכורת לעצירת מנחה.</string>
+    <string name="settings_notifications_denied">ההרשאה להתראות נדחתה. אפשר להפעיל אותה בהגדרות המכשיר.</string>
+
+    <!-- Share text -->
+    <string name="share_header">%1$s · %2$s</string>
+    <string name="share_zone">אזור זמן: %1$s</string>
+    <string name="share_start">יציאה מ%1$s ב-%2$s</string>
+    <string name="share_leg">  ↓ %1$s</string>
+    <string name="share_stop">%1$d. %2$s: %3$s - %4$s</string>
+    <string name="share_end">סיום היום: %1$s</string>
+    <string name="share_zmanim">זמני היום (%1$s): חצות %2$s · מנחה גדולה %3$s · מנחה קטנה %4$s · פלג %5$s · שקיעה %6$s · צאת הכוכבים %7$s</string>
+    <string name="share_chooser">שיתוף סיכום היום</string>
+    <string name="export_chooser">שמירת קובץ טיול</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_name">תזכורות טיול</string>
+    <string name="notif_channel_description">תזכורות ביום הטיול לפני שקיעה ולמנחה</string>
+    <string name="notif_leave_title">הגיע הזמן לצאת</string>
+    <string name="notif_leave_text">יש לצאת עכשיו כדי להגיע ל%1$s לפני השקיעה.</string>
+    <string name="notif_mincha_title">עצירה אחרונה למנחה</string>
+    <string name="notif_mincha_text">%1$s היא העצירה האחרונה שבה אפשר להתפלל מנחה.</string>
 </resources>
