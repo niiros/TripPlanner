@@ -31,6 +31,10 @@ Single user, no backend. Each milestone ends with a commit; CI (GitHub Actions) 
 7. **Notifications (optional)** - off by default, permission only when enabled.
 8. **Docs and verification** - README (API key setup, services and data sent), final CI run.
 
+## Status
+
+All milestones are implemented. Milestone 7 (reminders) is built and off by default.
+
 ## Known environment limits while building
 
 The build sandbox cannot reach Google's Maven repository or the Android SDK host, so Android

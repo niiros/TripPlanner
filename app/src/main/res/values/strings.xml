@@ -147,7 +147,6 @@
 
     <!-- Weather -->
     <string name="weather_not_yet">אין תחזית עדיין</string>
-    <string name="weather_failed">התחזית לא זמינה</string>
     <string name="weather_feels_like">מרגיש %1$d°</string>
     <string name="weather_temp">%1$d°</string>
     <string name="weather_wind">רוח %1$d קמ\"ש</string>

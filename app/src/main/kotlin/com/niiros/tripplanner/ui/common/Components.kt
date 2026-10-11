@@ -28,7 +28,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.niiros.tripplanner.R
 import com.niiros.tripplanner.core.plan.PointPlan
-import com.niiros.tripplanner.core.plan.WeatherState
 import com.niiros.tripplanner.ui.theme.LocalTripColors
 
 @Composable
@@ -110,8 +109,8 @@ fun WeatherRow(point: PointPlan, modifier: Modifier = Modifier) {
             )
             Text(t.weatherLine(w), style = MaterialTheme.typography.bodyMedium, color = c.text)
         } else {
-            val text = if (point.weatherState == WeatherState.FAILED) t.s(R.string.weather_failed) else t.s(R.string.weather_not_yet)
-            Text(text, style = MaterialTheme.typography.bodyMedium, color = c.textSecondary)
+            // Same text for "beyond the forecast horizon" and "request failed"; failures also get a banner.
+            Text(t.s(R.string.weather_not_yet), style = MaterialTheme.typography.bodyMedium, color = c.textSecondary)
         }
     }
 }
