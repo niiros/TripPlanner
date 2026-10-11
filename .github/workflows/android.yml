@@ -1,0 +1,72 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check that no key or keystore is committed
+        run: ./scripts/check-secrets.sh
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v4
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      # The Maps key comes from a repository secret. If it is absent the placeholder in
+      # local.defaults.properties is used and the app starts in demo mode.
+      - name: Write local.properties (Maps API key)
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+        run: |
+          if [ -n "$MAPS_API_KEY" ]; then
+            echo "MAPS_API_KEY=$MAPS_API_KEY" > local.properties
+            echo "Maps API key provided by secret."
+          else
+            echo "MAPS_API_KEY secret not set: building in demo mode."
+          fi
+
+      - name: Unit tests (core + app)
+        run: ./gradlew --stacktrace :core:test :app:testDebugUnitTest
+
+      - name: Lint
+        run: ./gradlew --stacktrace :app:lintDebug
+
+      - name: Build debug APK
+        run: ./gradlew --stacktrace :app:assembleDebug
+
+      - name: Remove local.properties
+        if: always()
+        run: rm -f local.properties
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: TripPlanner-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload test and lint reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: reports
+          path: |
+            core/build/reports/
+            app/build/reports/
+          if-no-files-found: ignore
