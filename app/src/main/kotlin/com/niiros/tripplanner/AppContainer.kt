@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit
  * weather and zones come from deterministic fakes and the Morocco sample day.
  */
 class AppContainer(context: Context) {
-    private val appContext = context.applicationContext
+    val appContext: Context = context.applicationContext
     val clock: () -> Instant = { Instant.now() }
     fun deviceZone(): ZoneId = ZoneId.systemDefault()
 

@@ -12,6 +12,7 @@ import com.niiros.tripplanner.core.plan.DayPlanner
 import com.niiros.tripplanner.core.util.TimeMath
 import com.niiros.tripplanner.data.json.TripJson
 import com.niiros.tripplanner.data.settings.AppSettings
+import com.niiros.tripplanner.notify.TripReminders
 import com.niiros.tripplanner.ui.common.Texts
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.FlowPreview
@@ -70,6 +71,9 @@ class TripViewModel(
                 try {
                     val plan = container.dayPlanner.plan(trip, settings.planner, container.clock(), container.deviceZone())
                     _state.update { it.copy(plan = plan, calculating = false) }
+                    if (settings.notificationsEnabled) {
+                        TripReminders.schedule(container.appContext, plan, settings.planner.sunsetBuffer, container.clock())
+                    }
                     persistResolvedInfo(trip, plan)
                 } catch (e: CancellationException) {
                     throw e

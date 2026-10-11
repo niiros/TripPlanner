@@ -1,6 +1,13 @@
 package com.niiros.tripplanner.ui.settings
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.material3.Switch
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +46,7 @@ import com.niiros.tripplanner.AppContainer
 import com.niiros.tripplanner.R
 import com.niiros.tripplanner.core.model.TzeitMethod
 import com.niiros.tripplanner.data.settings.AppSettings
+import com.niiros.tripplanner.notify.TripReminders
 import com.niiros.tripplanner.ui.common.SectionCard
 import com.niiros.tripplanner.ui.common.appContainer
 import com.niiros.tripplanner.ui.common.rememberTexts
@@ -55,12 +63,15 @@ class SettingsViewModel(private val container: AppContainer) : ViewModel() {
 
     fun setBuffer(minutes: Int) = viewModelScope.launch { container.settings.setSunsetBuffer(minutes) }
     fun setTzeit(method: TzeitMethod) = viewModelScope.launch { container.settings.setTzeitMethod(method) }
-    fun setNotifications(enabled: Boolean) = viewModelScope.launch { container.settings.setNotificationsEnabled(enabled) }
+    fun setNotifications(enabled: Boolean) = viewModelScope.launch {
+        container.settings.setNotificationsEnabled(enabled)
+        if (!enabled) TripReminders.cancelAll(container.appContext)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onBack: () -> Unit, notificationsSection: @Composable (SettingsViewModel) -> Unit = {}) {
+fun SettingsScreen(onBack: () -> Unit) {
     val container = appContainer()
     val vm: SettingsViewModel = viewModel { SettingsViewModel(container) }
     val settings by vm.settings.collectAsStateWithLifecycle()
@@ -109,7 +120,7 @@ fun SettingsScreen(onBack: () -> Unit, notificationsSection: @Composable (Settin
                 }
                 Text(t.s(R.string.settings_method_note), style = MaterialTheme.typography.bodySmall, color = c.textSecondary)
             }
-            notificationsSection(vm)
+            NotificationsSection(settings.notificationsEnabled, vm::setNotifications)
             SectionCard {
                 Text(t.s(R.string.settings_key_status), style = MaterialTheme.typography.titleMedium, color = c.text)
                 Text(t.s(if (vm.demoMode) R.string.settings_key_absent else R.string.settings_key_present), color = if (vm.demoMode) c.midday else c.ok)
@@ -119,5 +130,40 @@ fun SettingsScreen(onBack: () -> Unit, notificationsSection: @Composable (Settin
                 Text(t.s(R.string.settings_data_sources), style = MaterialTheme.typography.bodySmall, color = c.textSecondary)
             }
         }
+    }
+}
+
+/** Reminders are off by default; the notification permission is requested only when turned on. */
+@Composable
+private fun NotificationsSection(enabled: Boolean, onChange: (Boolean) -> Unit) {
+    val t = rememberTexts()
+    val c = LocalTripColors.current
+    var denied by remember { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        denied = !granted
+        onChange(granted)
+    }
+    SectionCard {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp)
+                .toggleable(value = enabled, role = Role.Switch) { on ->
+                    if (on && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    } else {
+                        denied = false
+                        onChange(on)
+                    }
+                },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(t.s(R.string.settings_notifications), style = MaterialTheme.typography.titleMedium, color = c.text)
+                Text(t.s(R.string.settings_notifications_detail), style = MaterialTheme.typography.bodySmall, color = c.textSecondary)
+            }
+            Switch(checked = enabled, onCheckedChange = null)
+        }
+        if (denied) Text(t.s(R.string.settings_notifications_denied), color = c.late, style = MaterialTheme.typography.bodySmall)
     }
 }

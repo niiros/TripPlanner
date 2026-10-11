@@ -172,12 +172,16 @@ fun TripScreen(tripId: String, isNew: Boolean, onBack: () -> Unit) {
             return@Scaffold
         }
 
-        // Local order while dragging; committed to the database when the drag ends.
-        val order = remember { mutableStateListOf<String>() }
+        // Local order while dragging; committed to the database when the drag ends. It follows the
+        // saved order whenever that changes (and no drag is in progress).
         val tripOrder = trip.stops.map { it.id }
+        val order = remember { mutableStateListOf<String>().apply { addAll(tripOrder) } }
         var dragging by remember { mutableStateOf(false) }
-        if (!dragging && order.toList() != tripOrder) {
-            order.clear(); order.addAll(tripOrder)
+        LaunchedEffect(tripOrder) {
+            if (!dragging && order.toList() != tripOrder) {
+                order.clear()
+                order.addAll(tripOrder)
+            }
         }
         val listState = rememberLazyListState()
         val reorderState = rememberReorderableLazyListState(listState) { from, to ->

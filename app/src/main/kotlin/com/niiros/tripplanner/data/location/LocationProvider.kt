@@ -1,6 +1,7 @@
 package com.niiros.tripplanner.data.location
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
@@ -18,11 +19,12 @@ class LocationProvider(private val context: Context) {
         ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
             ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
+    // Permission is checked by hasPermission() right below; lint cannot follow the helper.
+    @SuppressLint("MissingPermission")
     suspend fun current(): GeoPoint? {
         if (!hasPermission()) return null
         return try {
             val cts = CancellationTokenSource()
-            @Suppress("MissingPermission")
             val location = client.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, cts.token).await()
                 ?: client.lastLocation.await()
             location?.let { GeoPoint(it.latitude, it.longitude) }
